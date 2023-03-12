@@ -1,0 +1,167 @@
+<?php
+    class Authors {
+        //DB Connection and table
+        private $conn;
+        private $table = 'authors';
+
+        //Post table
+        public $id;
+        public $author;
+        
+        //constructor
+        public function __construct( $db ){
+            $this->conn = $db;
+        }
+
+
+        public function read() {
+            $query = 
+                "SELECT 
+                    *
+                FROM
+                    {$this->table}
+                ";
+
+            try{
+                //Prepare
+                $stmt = $this->conn->prepare($query);
+
+                //Execute query
+                $success = $stmt->execute();
+
+                if( $success )
+                    return $stmt;
+                else
+                    echo 'Author Query Error';
+
+            } catch( PDOException $e ){
+
+                echo 'Author Query Error: ' . $e->getMessage();
+            }
+
+
+        }
+
+        public function readSingle( $id ){
+
+            $query = 
+            "SELECT 
+                *
+            FROM
+                {$this->table}
+            WHERE
+                id = :ID
+            ";
+
+            try{
+                //Prepare
+                $stmt = $this->conn->prepare($query);
+
+                $stmt->bindValue( ":ID", $id );
+
+                //Execute query
+                $success = $stmt->execute();
+
+                if( $success )
+                    return $stmt;
+                else
+                    echo 'Author Query Error';
+
+            } catch( PDOException $e ){
+
+                echo 'Author Query Error: ' . $e->getMessage();
+            }
+
+        }
+
+        public function create( $author ){
+
+            $query = 
+            "INSERT INTO
+                {$this->table} (author)
+            VALUES ( :Author )";
+
+            try{
+                //Prepare
+                $stmt = $this->conn->prepare($query);
+
+                $stmt->bindValue( ":Author", $author );
+
+                //Execute query
+                $success = $stmt->execute();
+                
+                if( $success ){
+                    $lastId = $this->conn->lastInsertId();
+
+                    return $this->readSingle( $lastId );
+                }
+                else  
+                    echo 'Author Create Error: Record not created';
+
+            } catch( PDOException $e ){
+
+                echo 'Author Query Error: ' . $e->getMessage();
+            }
+
+        }
+
+        public function update( $id, $author ){
+
+            $query =
+                "UPDATE
+                    {$this->table}
+                SET
+                    author = :Author
+                WHERE 
+                    id = :ID";
+            try{
+                //Prepare
+                $stmt = $this->conn->prepare($query);
+
+                $stmt->bindValue( ":Author", $author );
+                $stmt->bindValue( ":ID", $id );
+
+                //Execute query
+                $success = $stmt->execute();
+                
+                if( $success ){
+                
+                    return $this->readSingle( $id );
+                }
+                else  
+                    echo 'Author Update Error: Record not updated';
+
+            } catch( PDOException $e ){
+
+                echo 'Author Update Error: ' . $e->getMessage();
+            }
+
+        }
+
+        public function delete( $id ){
+
+            $query =
+                "DELETE FROM
+                    {$this->table}
+                WHERE 
+                    ( id = :ID )";
+            try{
+                //Prepare
+                $stmt = $this->conn->prepare($query);
+
+                $stmt->bindValue( ":ID", $id );
+
+                //Execute query
+                $success = $stmt->execute();
+                
+                return $success;
+
+            } catch( PDOException $e ){
+
+                echo 'Author Delete Error: ' . $e->getMessage();
+            }
+
+        }
+        
+    }
+?>
