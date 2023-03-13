@@ -29,8 +29,18 @@
                 //Execute query
                 $success = $stmt->execute();
 
-                if( $success )
-                    return $stmt;
+                if( $success ){
+
+                    $num = $stmt->rowCount();
+
+                    if( $num > 0 ){
+            
+                        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+                    } else {
+                        return array( "message"=>"author_id Not Found" );
+                    }
+                }
                 else
                     echo 'Author Query Error';
 
@@ -62,8 +72,18 @@
                 //Execute query
                 $success = $stmt->execute();
 
-                if( $success )
-                    return $stmt;
+                if( $success ){
+
+                    $num = $stmt->rowCount();
+
+                    if( $num > 0 ){
+            
+                        return $stmt->fetch(PDO::FETCH_ASSOC);
+            
+                    } else {
+                        return array( "message"=>"author_id Not Found" );
+                    }
+                }
                 else
                     echo 'Author Query Error';
 
@@ -91,9 +111,12 @@
                 $success = $stmt->execute();
                 
                 if( $success ){
+
                     $lastId = $this->conn->lastInsertId();
 
-                    return $this->readSingle( $lastId );
+                    $record_arr = $this->readSingle( $lastId );
+
+                    return $record_arr;
                 }
                 else  
                     echo 'Author Create Error: Record not created';
