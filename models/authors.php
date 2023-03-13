@@ -3,16 +3,11 @@
         //DB Connection and table
         private $conn;
         private $table = 'authors';
-
-        //Post table
-        public $id;
-        public $author;
         
         //constructor
         public function __construct( $db ){
             $this->conn = $db;
         }
-
 
         public function read() {
             $query = 

@@ -2,13 +2,13 @@
 
     include_once "../../models/categories.php";
 
-    function update( $db, $id, $category){ 
+    function read($db){ 
 
         $categories = new Categories($db);
 
-        $results = $categories->update( $id, $category );
+        $results = $categories->read();
 
         echo json_encode($results);
-        
+
     }
 ?>
