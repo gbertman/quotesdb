@@ -45,7 +45,7 @@
     
     if( $method === "PUT" ){
         $data = json_decode(file_get_contents('php://input'));
-        if( empty($data->category) && empty($data->id))
+        if( empty($data->category) || empty($data->id) )
             echo json_encode( array( "message"=>"Missing Required Parameters") );
         else {
             $category = $data->category;

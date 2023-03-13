@@ -45,7 +45,7 @@
     
     if( $method === "PUT" ){
         $data = json_decode(file_get_contents('php://input'));
-        if( empty($data->author) && empty($data->id))
+        if( empty($data->author) || empty($data->id))
             echo json_encode( array( "message"=>"Missing Required Parameters") );
         else {
             $author = $data->author;
