@@ -11,7 +11,7 @@
         if( $result )
             echo json_encode( array( "id"=>$id ) );
         else {
-            echo "{ message: 'author_id Not Found' }";
+            echo json_encode( array("message"=>"author_id Not Found") );
         }
         
     }

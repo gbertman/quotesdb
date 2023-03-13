@@ -35,7 +35,7 @@
 
     if( $method === "POST" ){
         if( empty($_POST['author']) )
-            echo "{ message: 'Missing Required Parameters' }";
+            echo json_encode( array( "message"=>"Missing Required Parameters") );
         else {
            $author = $_POST['author'];
             create($db, $author );
@@ -45,7 +45,7 @@
     if( $method === "PUT" ){
         parse_str(file_get_contents('php://input'), $_PUT);
         if( empty($_PUT['author']) && empty($_PUT['id']))
-            echo "{ message: 'Missing Required Parameters' }";
+            echo json_encode( array( "message"=>"Missing Required Parameters") );
         else {
             $author = $_PUT['author'];
             $id = $_PUT['id'];
@@ -56,7 +56,7 @@
     if( $method === "DELETE" ){
         parse_str(file_get_contents('php://input'), $_DELETE);
         if( empty($_DELETE['id']) )
-            echo "{ message: 'Missing Required Parameters' }";
+            echo json_encode( array( "message"=>"Missing Required Parameters") );
         else {
            $id = $_DELETE['id'];
             delete($db, $id );
