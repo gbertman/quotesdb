@@ -34,31 +34,32 @@
             read($db);
 
     if( $method === "POST" ){
-        if( empty($_POST['author']) )
+        $data = json_decode( file_get_contents('php://input') );
+        if( empty( $data->author ) )
             echo json_encode( array( "message"=>"Missing Required Parameters") );
         else {
-           $author = $_POST['author'];
+           $author = $data->author;
             create($db, $author );
         }
     }
     
     if( $method === "PUT" ){
-        parse_str(file_get_contents('php://input'), $_PUT);
-        if( empty($_PUT['author']) && empty($_PUT['id']))
+        $data = json_decode(file_get_contents('php://input'));
+        if( empty($data->author) && empty($data->id))
             echo json_encode( array( "message"=>"Missing Required Parameters") );
         else {
-            $author = $_PUT['author'];
-            $id = $_PUT['id'];
+            $author = $data->author;
+            $id = $data->id;
             update( $db, $id, $author );
         }
     }
 
     if( $method === "DELETE" ){
-        parse_str(file_get_contents('php://input'), $_DELETE);
-        if( empty($_DELETE['id']) )
+        $data = json_decode(file_get_contents('php://input'));
+        if( empty($data->id))
             echo json_encode( array( "message"=>"Missing Required Parameters") );
         else {
-           $id = $_DELETE['id'];
+           $id = $data->id;
             delete($db, $id );
         }
     }
