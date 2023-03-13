@@ -1,6 +1,6 @@
 <?php
 
-    include_once "../../models/categorys.php";
+    include_once "../../models/categories.php";
 
     function create( $db, $category){ 
 
