@@ -1,25 +1,14 @@
 <?php
 
-    include_once "../../models/quotes.php";
+    include_once "../../models/categories.php";
 
     function read($db){ 
+
         $quotes = new Quotes($db);
 
         $results = $quotes->read();
 
-        $num = $results->rowCount();
+        echo json_encode($results);
 
-        if( $num > 0 ){
-
-            $quote_arr = array();
-
-            $quote_arr = $results->fetchAll(PDO::FETCH_ASSOC);
-
-            echo json_encode($quote_arr);
-
-        } else {
-            echo "message: ";
-        }
-        
     }
 ?>

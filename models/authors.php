@@ -172,7 +172,10 @@
                 //Execute query
                 $success = $stmt->execute();
                 
-                return $success;
+                if( $success )
+                    return array( "id"=>$id );
+                else
+                    return array("message"=>"author_id Not Found");
 
             } catch( PDOException $e ){
 
