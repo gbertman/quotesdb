@@ -160,10 +160,10 @@
         public function delete( $id ){
 
             $query =
-                "DELETE FROM
-                    {$this->table}
-                WHERE 
-                    ( id = :ID )";
+            "DELETE FROM
+                {$this->table}
+            WHERE 
+                ( id = :ID )";
             try{
                 //Prepare
                 $stmt = $this->conn->prepare($query);
@@ -172,11 +172,13 @@
 
                 //Execute query
                 $success = $stmt->execute();
+
+                $num = $stmt->rowCount();
                 
-                if( $success )
+                if( $num > 0 )
                     return array( "id"=>$id );
                 else
-                    return array("message"=>"category_id Not Found");
+                    return array( "message"=>"category_id Not Found" );
 
             } catch( PDOException $e ){
 

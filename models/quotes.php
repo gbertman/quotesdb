@@ -1,4 +1,7 @@
 <?php
+    include_once "./authors.php";
+    include_once "./categories.php";
+
     class Quotes {
         //DB Connection and table
         private $conn;
@@ -263,6 +266,18 @@
                 {$this->table} (quote, author_id, category_id)
             VALUES ( :Quote, :AuthorId, :CategoryId )";
 
+            $authors = new Authors( $this->conn );
+            $categories = new Categories( $this->conn );
+
+            $authorResult = $authors->readOnce( $authorId );
+            $categoryResult = $categories->readOnce( $categoryId );
+
+            if( empty($authorResult['message']) )
+                return $authorResult;
+            
+            if( empty($categoryResult["message"]))
+                return $categoryResult;
+
             try{
                 //Prepare
                 $stmt = $this->conn->prepare($query);
@@ -303,6 +318,19 @@
                     quote = :Quote, category_id = :CategoryId, author_id = :AuthorId 
                 WHERE 
                     id = :ID";
+            
+            $authors = new Authors( $this->conn );
+            $categories = new Categories( $this->conn );
+
+            $authorResult = $authors->readOnce( $authorId );
+            $categoryResult = $categories->readOnce( $categoryId );
+
+            if( empty($authorResult['message']) )
+                return $authorResult;
+            
+            if( empty($categoryResult["message"]))
+                return $categoryResult;
+
             try{
                 //Prepare
                 $stmt = $this->conn->prepare($query);

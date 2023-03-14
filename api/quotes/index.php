@@ -64,7 +64,7 @@
 
     if( $method === "POST" ){
         $data = json_decode( file_get_contents('php://input') );
-        if( empty( $data->quote ) || empty( $data->authorId ) || empty( $data->categoryId ) )
+        if( empty( $data->quote ) || empty( $data->author_id ) || empty( $data->category_id ) )
             echo json_encode( array( "message"=>"Missing Required Parameters") );
         else {
            $quote = $data->quote;
@@ -77,7 +77,7 @@
     
     if( $method === "PUT" ){
         $data = json_decode(file_get_contents('php://input'));
-        if( empty( $data->id ) || empty( $data->quote ) || empty( $data->authorId ) || empty( $data->categoryId ) )
+        if( empty( $data->id ) || empty( $data->quote ) || empty( $data->author_id ) || empty( $data->category_id ) )
             echo json_encode( array( "message"=>"Missing Required Parameters") );
         else {
             $id = $data->id;
