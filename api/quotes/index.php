@@ -18,7 +18,7 @@
     include_once "./delete.php";
     include_once "./read_author.php";
     include_once "./read_author_category.php";
-    include_once "./read_category";
+    include_once "./read_category.php";
 
     //connect to database and then create the connection to pass
     $database = new Database();
@@ -67,10 +67,9 @@
         if( empty( $data->quote ) || empty( $data->author_id ) || empty( $data->category_id ) )
             echo json_encode( array( "message"=>"Missing Required Parameters") );
         else {
-           $quote = $data->quote;
-           $categoryId = $data->categoryId;
-           $authorId = $data->authorId;
-
+            $quote = $data->quote;
+            $categoryId = $data->category_id;
+            $authorId = $data->author_id;
             create($db, $quote, $authorId, $categoryId );
         }
     }
@@ -82,8 +81,8 @@
         else {
             $id = $data->id;
             $quote = $data->quote;
-            $categoryId = $data->categoryId;
-            $authorId = $data->authorId;
+            $categoryId = $data->category_id;
+            $authorId = $data->author_id;
             update($db, $id, $quote, $authorId, $categoryId );
         }
     }

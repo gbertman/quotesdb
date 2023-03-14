@@ -1,6 +1,6 @@
 <?php
-    include_once "./authors.php";
-    include_once "./categories.php";
+    include_once "authors.php";
+    include_once "categories.php";
 
     class Quotes {
         //DB Connection and table
@@ -268,16 +268,15 @@
 
             $authors = new Authors( $this->conn );
             $categories = new Categories( $this->conn );
-
-            $authorResult = $authors->readOnce( $authorId );
-            $categoryResult = $categories->readOnce( $categoryId );
-
-            if( empty($authorResult['message']) )
+            
+            $authorResult = $authors->readSingle( $authorId );
+            if( !empty( $authorResult['message'] ) )
                 return $authorResult;
             
-            if( empty($categoryResult["message"]))
+            $categoryResult = $categories->readSingle( $categoryId );
+            if( !empty( $categoryResult['message'] ))
                 return $categoryResult;
-
+            
             try{
                 //Prepare
                 $stmt = $this->conn->prepare($query);
@@ -300,13 +299,13 @@
                     return $record_arr;
                 }
                 else  
-                    echo 'Quote Create Error: Record not created';
+                    return array( "message"=>"No Quotes Found" );
 
             } catch( PDOException $e ){
 
                 echo 'Quote Query Error: ' . $e->getMessage();
             }
-
+            
         }
 
         public function update( $id, $quote, $authorId, $categoryId ){
@@ -323,12 +322,11 @@
             $categories = new Categories( $this->conn );
 
             $authorResult = $authors->readOnce( $authorId );
-            $categoryResult = $categories->readOnce( $categoryId );
-
-            if( empty($authorResult['message']) )
+            if( !empty($authorResult['message']) )
                 return $authorResult;
-            
-            if( empty($categoryResult["message"]))
+
+            $categoryResult = $categories->readOnce( $categoryId );
+            if( !empty($categoryResult["message"]))
                 return $categoryResult;
 
             try{
@@ -350,7 +348,7 @@
                     return $this->readSingle( $id );
                 }
                 else  
-                    echo 'Quote Update Error: Record not updated';
+                    return array( "message"=>"No Quotes Found" );
 
             } catch( PDOException $e ){
 
