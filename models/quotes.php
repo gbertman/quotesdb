@@ -267,7 +267,7 @@
             FROM
                 {$this->table}
             WHERE
-                a.id = :ID
+                id = :ID
     
             ";
 
@@ -357,7 +357,7 @@
                 "UPDATE
                     {$this->table}
                 SET
-                    quote = :Quote, category_id = :CategoryId, author_id = :AuthorId 
+                    quote = :QuoteVal, category_id = :CategoryId, author_id = :AuthorId 
                 WHERE 
                     id = :ID";
             
@@ -371,33 +371,33 @@
             $categoryResult = $categories->readSingle( $categoryId );
             if( !empty($categoryResult["message"]))
                 return $categoryResult;
-
+            
             try{
                 //Prepare
                 $stmt = $this->conn->prepare($query);
-
-                $stmt->bindValue( ":Quote", $quote );
-                $stmt->bindValue( ":ID", $id );
-                $stmt->bindValue( ":AuthorId", $authorId );
+                
+                $stmt->bindValue( ":QuoteVal", $quote );
                 $stmt->bindValue( ":CategoryId", $categoryId );
+                $stmt->bindValue( ":AuthorId", $authorId );
+                $stmt->bindValue( ":ID", $id );
 
                 //Execute query
                 $success = $stmt->execute();
-
+                
                 $num = $stmt->rowCount();
                 
-                if( $$num > 0 ){
+                if( $num > 0 ){
                 
                     return $this->selectSingle( $id );
                 }
                 else  
                     return array( "message"=>"No Quotes Found" );
-
+                
             } catch( PDOException $e ){
 
                 echo 'Quote Update Error: ' . $e->getMessage();
             }
-
+            
         }
 
         public function delete( $id ){

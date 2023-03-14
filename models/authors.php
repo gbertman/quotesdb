@@ -157,12 +157,13 @@
         }
 
         public function delete( $id ){
+            
             $query =
-            "DELETE FROM
-                {$this->table}
-            WHERE 
-                ( id = :ID )";
-                
+                "DELETE FROM
+                    {$this->table}
+                WHERE 
+                    ( id = :ID )";
+
             try{
                 //Prepare
                 $stmt = $this->conn->prepare($query);

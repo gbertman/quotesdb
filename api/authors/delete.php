@@ -6,7 +6,7 @@
 
         $authors = new Authors($db);
 
-        $result = $authors->delete( $id );
+        $results = $authors->delete( $id );
 
         echo json_encode( $results );
         

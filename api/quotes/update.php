@@ -6,7 +6,7 @@
 
         $quotes = new Quotes($db);
 
-        $results = $quotes->update( $id, $quotes, $authorId, $categoryId );
+        $results = $quotes->update( $id, $quote, $authorId, $categoryId );
 
         echo json_encode($results);
         

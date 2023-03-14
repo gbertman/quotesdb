@@ -59,7 +59,7 @@
         if( empty($data->id))
             echo json_encode( array( "message"=>"Missing Required Parameters") );
         else {
-           $id = $data->id;
+            $id = $data->id;
             delete($db, $id );
         }
     }
