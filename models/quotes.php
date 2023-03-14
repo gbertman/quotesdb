@@ -259,6 +259,49 @@
 
         }
 
+        private function selectSingle( $id ){
+
+            $query = 
+            "SELECT 
+                *
+            FROM
+                {$this->table}
+            WHERE
+                a.id = :ID
+    
+            ";
+
+            try{
+                //Prepare
+                $stmt = $this->conn->prepare($query);
+
+                $stmt->bindValue( ":ID", $id );
+
+                //Execute query
+                $success = $stmt->execute();
+
+                if( $success ){
+
+                    $num = $stmt->rowCount();
+
+                    if( $num > 0 ){
+            
+                        return $stmt->fetch(PDO::FETCH_ASSOC);
+            
+                    } else {
+                        return array( "message"=>"No Quotes Found" );
+                    }
+                }
+                else
+                    echo 'Quote Query Error';
+
+            } catch( PDOException $e ){
+
+                echo 'Quote Query Error: ' . $e->getMessage();
+            }
+
+        }
+
         public function create( $quote, $authorId, $categoryId ){
 
             $query = 
@@ -294,7 +337,7 @@
 
                     $lastId = $this->conn->lastInsertId();
 
-                    $record_arr = $this->readSingle( $lastId );
+                    $record_arr = $this->selectSingle( $lastId );
 
                     return $record_arr;
                 }
@@ -321,11 +364,11 @@
             $authors = new Authors( $this->conn );
             $categories = new Categories( $this->conn );
 
-            $authorResult = $authors->readOnce( $authorId );
+            $authorResult = $authors->readSingle( $authorId );
             if( !empty($authorResult['message']) )
                 return $authorResult;
 
-            $categoryResult = $categories->readOnce( $categoryId );
+            $categoryResult = $categories->readSingle( $categoryId );
             if( !empty($categoryResult["message"]))
                 return $categoryResult;
 
@@ -345,7 +388,7 @@
                 
                 if( $$num > 0 ){
                 
-                    return $this->readSingle( $id );
+                    return $this->selectSingle( $id );
                 }
                 else  
                     return array( "message"=>"No Quotes Found" );
