@@ -2,11 +2,11 @@
 
     include_once "../../models/quotes.php";
 
-    function readSingle( $db, $id){ 
+    function readCategory( $db, $categoryId){ 
 
         $quotes = new Quotes($db);
 
-        $results = $quotes->readSingle($id);
+        $results = $quotes->readCategory($categoryId);
 
         echo json_encode($results);
     }
