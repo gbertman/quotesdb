@@ -16,6 +16,9 @@
     include_once "./create.php";
     include_once "./update.php";
     include_once "./delete.php";
+    include_once "./read_author.php";
+    include_once "./read_author_category.php";
+    include_once "./read_category";
 
     //connect to database and then create the connection to pass
     $database = new Database();
@@ -25,14 +28,14 @@
     $method = $_SERVER['REQUEST_METHOD'];
     
     //If it is a get without a parameter do a general read else find the particular record with the if.
-    if( $method === "GET" )
+    if( $method === "GET" ){
         if( isset($_GET['id']) ){
             $id = $_GET['id'];
             readSingle( $db, $id );
         }
-        else if( isset($_GET['authorId']) && isset( $_GET['categoryId']) ){
+        else if( isset( $_GET['authorId']) && isset( $_GET['categoryId']) ) {
             $authorId = $_GET['authorId'];
-            $categoryId = $_GET['categoryId']
+            $categoryId = $_GET['categoryId'];
             readAuthorCategory( $db, $authorId, $categoryId );
         }
         else if( isset($_GET['authorId']) ) {
@@ -43,8 +46,8 @@
             $categoryId = $_GET['categoryId'];
             readCategory( $db, $categoryId );
         }
-        else if( isset($GET_random['random'])){
-            else if( isset($_GET['authorId']) ) {
+       /* else if( isset($GET_random['random'])){
+            if( isset($_GET['authorId']) ) {
                 $authorId = $_GET['authorId'];
                 randomAuthor( $db, $authorId );
             }
@@ -54,9 +57,10 @@
             } else {
                 random($db);
             }
-        }
+        }*/
         else
             read($db);
+    }
 
     if( $method === "POST" ){
         $data = json_decode( file_get_contents('php://input') );
