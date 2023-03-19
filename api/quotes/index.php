@@ -29,38 +29,33 @@
     
     //If it is a get without a parameter do a general read else find the particular record with the if.
     if( $method === "GET" ){
+        if( isset($_GET['random']) && $_GET['random'] === "true" ){
+            $random = true;
+        } else {
+            $random = false;
+        }
+                
         if( isset($_GET['id']) ){
             $id = $_GET['id'];
             readSingle( $db, $id );
         }
-        else if( isset( $_GET['authorId']) && isset( $_GET['categoryId']) ) {
-            $authorId = $_GET['authorId'];
-            $categoryId = $_GET['categoryId'];
-            readAuthorCategory( $db, $authorId, $categoryId );
+        else if( isset( $_GET['author_id']) && isset( $_GET['category_id']) ) {
+            $authorId = $_GET['author_id'];
+            $categoryId = $_GET['category_id'];
+            readAuthorCategory( $db, $authorId, $categoryId, $random );
         }
-        else if( isset($_GET['authorId']) ) {
-            $authorId = $_GET['authorId'];
-            readAuthor( $db, $authorId );
+        else if( isset($_GET['author_id']) ) {
+            $authorId = $_GET['author_id'];
+            readAuthor( $db, $authorId, $random );
         }
-        else if( isset($_GET['categoryId']) ) {
-            $categoryId = $_GET['categoryId'];
-            readCategory( $db, $categoryId );
+        else if( isset($_GET['category_id']) ) {
+            $categoryId = $_GET['category_id'];
+            readCategory( $db, $categoryId, $random );
         }
-       /* else if( isset($GET_random['random'])){
-            if( isset($_GET['authorId']) ) {
-                $authorId = $_GET['authorId'];
-                randomAuthor( $db, $authorId );
-            }
-            else if( isset($_GET['categoryId']) ) {
-                $categoryId = $_GET['categoryId'];
-                randomCategory( $db, $categoryId );
-            } else {
-                random($db);
-            }
-        }*/
         else
-            read($db);
+            read($db, $random );
     }
+    //Post method
 
     if( $method === "POST" ){
         $data = json_decode( file_get_contents('php://input') );

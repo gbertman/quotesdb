@@ -8,6 +8,27 @@
         private $table = 'quotes';
         private $table2 = 'categories';
         private $table3 = 'authors';
+
+        private function numOfRows( $tableToLookAt ){
+
+            $query = "SELECT * FROM {$tableToLookAt}";
+
+            try{
+                //Prepare
+                $stmt = $this->conn->prepare($query);
+
+                //Execute query
+                $success = $stmt->execute();
+
+                $num = $stmt->rowCount();  
+                
+                return $num;
+
+            } catch( PDOException $e ){
+
+                echo 'Quote Query Error: ' . $e->getMessage();
+            }
+        }
         
         //constructor
         public function __construct( $db ){
@@ -62,21 +83,26 @@
         public function readSingle( $id ){
 
             $query = 
-            "SELECT 
-                a.id,
-                a.quote,
-                b.category,
-                c.author
-            FROM
-                {$this->table} a
-            LEFT JOIN {$this->table2} b
-            ON a.category_id = b.id
-            LEFT JOIN {$this->table3} c
-            ON a.author_id = c.id
-            WHERE
-                a.id = :ID
-    
-            ";
+                "SELECT 
+                    a.id,
+                    a.quote,
+                    b.category,
+                    c.author
+                FROM
+                    {$this->table} a
+                LEFT JOIN {$this->table2} b
+                ON a.category_id = b.id
+                LEFT JOIN {$this->table3} c
+                ON a.author_id = c.id
+                WHERE
+                    a.id = :ID
+
+                ";
+
+            if( $id === "random" ){
+                $numRows = numberOfRows( "quote" );
+                $id = rand(1, $numRows );
+            }
 
             try{
                 //Prepare
